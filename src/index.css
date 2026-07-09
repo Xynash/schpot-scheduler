@@ -1,0 +1,267 @@
+@import "tailwindcss";
+
+/* ============================================
+   SCHPOT DESIGN TOKENS
+   ============================================ */
+@theme {
+  --color-cream: #f7f3ea;
+  --color-ink: #141414;
+  --color-brand: #e8222d;
+
+  --font-display: "Anton", sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-hard: 4px 4px 0 0 #141414;
+  --shadow-hard-sm: 3px 3px 0 0 #141414;
+  --shadow-hard-lg: 6px 6px 0 0 #141414;
+  --shadow-hard-red: 4px 4px 0 0 #e8222d;
+}
+
+/* ============================================
+   BASE
+   ============================================ */
+body {
+  @apply bg-cream text-ink antialiased font-sans;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink);
+  border: 2px solid var(--color-cream);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   COMPONENTS
+   ============================================ */
+@layer components {
+  .display {
+    @apply font-display uppercase tracking-wide;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-bold uppercase tracking-[0.15em] text-ink/50;
+  }
+  .eyebrow-boxed {
+    @apply inline-block border border-brand px-3 py-1 text-[11px] font-bold uppercase tracking-[0.15em] text-brand;
+  }
+
+  .card {
+    @apply border-2 border-ink bg-white;
+  }
+  .card-hover {
+    @apply transition-all hover:shadow-hard hover:-translate-x-0.5 hover:-translate-y-0.5;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-ink bg-brand
+      px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-white shadow-hard-sm
+      transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-hard
+      active:translate-x-0.5 active:translate-y-0.5 active:shadow-none
+      disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-ink bg-white
+      px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-ink shadow-hard-sm
+      transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-hard
+      active:translate-x-0.5 active:translate-y-0.5 active:shadow-none
+      disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-dark {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-ink bg-ink
+      px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-white shadow-hard-sm
+      transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-hard-red
+      active:translate-x-0.5 active:translate-y-0.5 active:shadow-none
+      disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-ghost {
+    @apply text-xs font-bold uppercase tracking-widest text-brand
+      hover:underline underline-offset-4;
+  }
+
+  .chip {
+    @apply border-2 border-ink/20 bg-white px-3 py-1.5 text-[10px] font-bold uppercase
+      tracking-widest text-ink/50 transition-colors hover:border-ink hover:text-ink;
+  }
+  .chip-active {
+    @apply border-2 border-ink bg-brand px-3 py-1.5 text-[10px] font-bold uppercase
+      tracking-widest text-white;
+  }
+  .chip-dark {
+    @apply border-2 border-ink bg-ink px-3 py-1.5 text-[10px] font-bold uppercase
+      tracking-widest text-white;
+  }
+
+  .input-field {
+    @apply w-full border-2 border-ink bg-white px-3 py-2.5 text-sm
+      transition-shadow placeholder:text-ink/30
+      focus:outline-none focus:shadow-hard-sm;
+  }
+  .field-label {
+    @apply mb-1 block text-[11px] font-bold uppercase tracking-[0.12em] text-ink/70;
+  }
+  .field-error {
+    @apply mt-1 text-xs font-medium text-brand;
+  }
+
+  .badge {
+    @apply inline-flex items-center border-2 border-ink px-2 py-0.5
+      text-[10px] font-bold uppercase tracking-widest;
+  }
+}
+
+/* ============================================
+   GRAPH-PAPER GRID — DRIFTING + CURSOR SPOTLIGHT
+   The base grid pans diagonally forever; a stronger
+   red grid is revealed in a circle that follows the
+   cursor (--mx / --my set from Layout.jsx).
+   ============================================ */
+@keyframes grid-drift {
+  from { background-position: 0 0; }
+  to { background-position: 56px 56px; }
+}
+
+.grid-bg {
+  position: relative;
+}
+
+/* Layer 1: faint ink grid, slowly drifting */
+.grid-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(20, 20, 20, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 20, 20, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  animation: grid-drift 14s linear infinite;
+}
+
+/* Layer 2: red grid revealed around the cursor — drifts in sync */
+.grid-bg::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(232, 34, 45, 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(232, 34, 45, 0.35) 1px, transparent 1px);
+  background-size: 56px 56px;
+  animation: grid-drift 14s linear infinite;
+  -webkit-mask-image: radial-gradient(
+    320px circle at var(--mx, 50vw) var(--my, 40vh),
+    black 0%,
+    rgba(0, 0, 0, 0.4) 55%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    320px circle at var(--mx, 50vw) var(--my, 40vh),
+    black 0%,
+    rgba(0, 0, 0, 0.4) 55%,
+    transparent 100%
+  );
+}
+
+/* Keep app content above the grid layers */
+.grid-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* No cursor on touch devices — hide the spotlight layer */
+@media (hover: none) {
+  .grid-bg::after {
+    display: none;
+  }
+}
+
+/* ============================================
+   MARQUEE TICKER
+   Duplicated content + translateX(-50%) = seamless loop.
+   Duration controlled per-instance via --marquee-duration.
+   ============================================ */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee-scroll var(--marquee-duration, 30s) linear infinite;
+  will-change: transform;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ============================================
+   ROTATING WORD FLIP
+   ============================================ */
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(60%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.word-in {
+  animation: word-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ============================================
+   ENTRANCE ANIMATION (optional utility)
+   Add .fade-up to any element for a subtle entry.
+   ============================================ */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fade-up 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* ============================================
+   ACCESSIBILITY & PRINT
+   Motion-sensitive users get a calm, static grid
+   and no decorative animation.
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .word-in,
+  .fade-up {
+    animation: none !important;
+  }
+  .grid-bg::before,
+  .grid-bg::after {
+    animation: none !important;
+  }
+  .grid-bg::after {
+    display: none;
+  }
+  .card-hover,
+  .btn-primary,
+  .btn-outline,
+  .btn-dark {
+    transition: none;
+  }
+}
+
+@media print {
+  .grid-bg::before,
+  .grid-bg::after,
+  .marquee-track {
+    display: none;
+  }
+}
