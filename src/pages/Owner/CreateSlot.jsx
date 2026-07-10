@@ -1,11 +1,22 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { addDays, format } from "date-fns";
-import { Clock, MapPin, Users, Minus, Plus } from "lucide-react";
+import { addDays, addWeeks, format } from "date-fns";
+import { Clock, MapPin, Users, Minus, Plus, Repeat } from "lucide-react";
 import { toast } from "sonner";
-import { useCreateSlot } from "../../hooks/useSlots";
+import { useCreateSlot, useCreateSlots } from "../../hooks/useSlots";
 
 const DURATIONS = [30, 60, 90, 120];
+const WEEKDAYS = [
+  { label: "S", value: 0 },
+  { label: "M", value: 1 },
+  { label: "T", value: 2 },
+  { label: "W", value: 3 },
+  { label: "T", value: 4 },
+  { label: "F", value: 5 },
+  { label: "S", value: 6 },
+];
+
 const addMins = (t, m) => {
   if (!t) return "";
   const [h, min] = t.split(":").map(Number);
@@ -18,21 +29,80 @@ export default function CreateSlot() {
     defaultValues: { capacity: 1, date: format(new Date(), "yyyy-MM-dd") },
   });
   const create = useCreateSlot();
+  const createMany = useCreateSlots();
   const navigate = useNavigate();
   const v = watch();
 
-  const onSubmit = ({ title, description, location, date, start, end, capacity }) => {
-    const start_time = new Date(`${date}T${start}`);
-    const end_time = new Date(`${date}T${end}`);
-    if (end_time <= start_time) return toast.error("End time must be after start time");
-    if (start_time <= new Date()) return toast.error("Slot must be in the future");
-    create.mutate(
-      { title, description, location, capacity: Number(capacity),
-        start_time: start_time.toISOString(), end_time: end_time.toISOString() },
-      { onSuccess: () => { toast.success("Slot created"); navigate("/owner"); },
-        onError: (e) => toast.error(e.message) }
+  const [repeat, setRepeat] = useState(false);
+  const [repeatDays, setRepeatDays] = useState([]); // JS day numbers: 0=Sun … 6=Sat
+  const [repeatUntil, setRepeatUntil] = useState(
+    format(addWeeks(new Date(), 2), "yyyy-MM-dd")
+  );
+
+  const toggleDay = (d) =>
+    setRepeatDays((prev) =>
+      prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d].sort()
     );
+
+  const onSubmit = ({ title, description, location, date, start, end, capacity }) => {
+    const base = { title, description, location, capacity: Number(capacity) };
+    const mk = (d) => ({
+      ...base,
+      start_time: new Date(`${d}T${start}`).toISOString(),
+      end_time: new Date(`${d}T${end}`).toISOString(),
+    });
+
+    // Validate times using the first date
+    const first = mk(date);
+    if (new Date(first.end_time) <= new Date(first.start_time))
+      return toast.error("End time must be after start time");
+
+    // --- One-off slot ---
+    if (!repeat) {
+      if (new Date(first.start_time) <= new Date())
+        return toast.error("Slot must be in the future");
+      return create.mutate(first, {
+        onSuccess: () => { toast.success("Slot created"); navigate("/owner"); },
+        onError: (e) => toast.error(e.message),
+      });
+    }
+
+    // --- Repeating: materialize one row per matching day ---
+    if (repeatDays.length === 0)
+      return toast.error("Pick at least one weekday to repeat on");
+    if (new Date(repeatUntil) < new Date(date))
+      return toast.error("'Repeat until' must be on or after the start date");
+
+    const recurrence_id = crypto.randomUUID();
+    const slots = [];
+    let cursor = new Date(`${date}T00:00`);
+    const until = new Date(`${repeatUntil}T23:59`);
+
+    while (cursor <= until) {
+      if (repeatDays.includes(cursor.getDay())) {
+        const d = format(cursor, "yyyy-MM-dd");
+        const occ = mk(d);
+        if (new Date(occ.start_time) > new Date())
+          slots.push({ ...occ, recurrence_id });
+      }
+      cursor = addDays(cursor, 1);
+    }
+
+    if (slots.length === 0)
+      return toast.error("No future occurrences in that range");
+    if (slots.length > 100)
+      return toast.error("That's over 100 slots — shorten the date range");
+
+    createMany.mutate(slots, {
+      onSuccess: (data) => {
+        toast.success(`Created ${data.length} repeating slots`);
+        navigate("/owner");
+      },
+      onError: (e) => toast.error(e.message),
+    });
   };
+
+  const isPending = create.isPending || createMany.isPending;
 
   return (
     <div>
@@ -88,6 +158,9 @@ export default function CreateSlot() {
             </div>
             <input type="date" className="input-field" {...register("date", { required: "Date is required" })} />
             {errors.date && <p className="field-error">{errors.date.message}</p>}
+            {repeat && (
+              <p className="mt-1 text-xs text-ink/40">With repeat on, this is the first day of the series.</p>
+            )}
           </div>
 
           <div>
@@ -118,8 +191,37 @@ export default function CreateSlot() {
             </div>
           </div>
 
-          <button disabled={create.isPending} className="btn-primary w-full">
-            {create.isPending ? "Creating…" : "Create slot"}
+          {/* REPEAT WEEKLY */}
+          <div className="border-t-2 border-ink/10 pt-5">
+            <button type="button" onClick={() => setRepeat(!repeat)}
+              className={`flex items-center gap-2 ${repeat ? "chip-active" : "chip"}`}>
+              <Repeat size={12} /> Repeat weekly
+            </button>
+
+            {repeat && (
+              <div className="mt-4 space-y-4">
+                <div>
+                  <label className="field-label">Repeat on</label>
+                  <div className="flex gap-1.5">
+                    {WEEKDAYS.map((d) => (
+                      <button type="button" key={d.value} onClick={() => toggleDay(d.value)}
+                        className={repeatDays.includes(d.value) ? "chip-active" : "chip"}>
+                        {d.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="field-label">Repeat until</label>
+                  <input type="date" className="input-field" value={repeatUntil}
+                    onChange={(e) => setRepeatUntil(e.target.value)} />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <button disabled={isPending} className="btn-primary w-full">
+            {isPending ? "Creating…" : repeat ? "Create repeating slots" : "Create slot"}
           </button>
         </form>
 
@@ -133,6 +235,7 @@ export default function CreateSlot() {
             </div>
             <p className="mt-1 text-xs font-bold uppercase tracking-wider text-ink/50">
               {v.date ? format(new Date(v.date), "EEE, d MMM yyyy") : "Pick a date"}
+              {repeat && repeatDays.length > 0 && " · repeats weekly"}
             </p>
             <div className="mt-4 space-y-1.5 text-sm text-ink/70">
               <p className="flex items-center gap-2"><Clock size={14} className="text-brand" />{v.start && v.end ? `${v.start} – ${v.end}` : "Set times"}</p>

@@ -28,6 +28,19 @@ export function useCreateSlot() {
   });
 }
 
+export function useCreateSlots() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (slots) => {
+      const { data, error } = await supabase
+        .from("slots").insert(slots).select();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries(),
+  });
+}
+
 export function useDeleteSlot() {
   const qc = useQueryClient();
   return useMutation({
