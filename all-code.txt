@@ -1,0 +1,1945 @@
+ 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\App.jsx ===== 
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import AvailableSlots from "./pages/user/AvailableSlots";
+import MyBookings from "./pages/user/MyBookings";
+import CalendarPage from "./pages/CalendarPage";
+import Dashboard from "./pages/owner/Dashboard";
+import CreateSlot from "./pages/owner/CreateSlot";
+import Bookings from "./pages/owner/Bookings";
+import NotFound from "./pages/NotFound";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<AvailableSlots />} />
+          <Route path="/my-bookings" element={<MyBookings />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/owner" element={<Dashboard />} />
+          <Route path="/owner/create" element={<CreateSlot />} />
+          <Route path="/owner/bookings" element={<Bookings />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\main.jsx ===== 
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
+import App from "./App";
+import "./index.css";
+
+const queryClient = new QueryClient();
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <App />
+      <Toaster position="top-center"
+        toastOptions={{ style: { border: "2px solid #141414", borderRadius: 0, boxShadow: "4px 4px 0 #141414" } }} />
+    </QueryClientProvider>
+  </React.StrictMode>
+); 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\App.css ===== 
+.counter {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  margin-bottom: 24px;
+
+  &:hover {
+    border-color: var(--accent-border);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+.hero {
+  position: relative;
+
+  .base,
+  .framework,
+  .vite {
+    inset-inline: 0;
+    margin: 0 auto;
+  }
+
+  .base {
+    width: 170px;
+    position: relative;
+    z-index: 0;
+  }
+
+  .framework,
+  .vite {
+    position: absolute;
+  }
+
+  .framework {
+    z-index: 1;
+    top: 34px;
+    height: 28px;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
+      scale(1.4);
+  }
+
+  .vite {
+    z-index: 0;
+    top: 107px;
+    height: 26px;
+    width: auto;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
+      scale(0.8);
+  }
+}
+
+#center {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  place-content: center;
+  place-items: center;
+  flex-grow: 1;
+
+  @media (max-width: 1024px) {
+    padding: 32px 20px 24px;
+    gap: 18px;
+  }
+}
+
+#next-steps {
+  display: flex;
+  border-top: 1px solid var(--border);
+  text-align: left;
+
+  & > div {
+    flex: 1 1 0;
+    padding: 32px;
+    @media (max-width: 1024px) {
+      padding: 24px 20px;
+    }
+  }
+
+  .icon {
+    margin-bottom: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+#docs {
+  border-right: 1px solid var(--border);
+
+  @media (max-width: 1024px) {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+#next-steps ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  margin: 32px 0 0;
+
+  .logo {
+    height: 18px;
+  }
+
+  a {
+    color: var(--text-h);
+    font-size: 16px;
+    border-radius: 6px;
+    background: var(--social-bg);
+    display: flex;
+    padding: 6px 12px;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: var(--shadow);
+    }
+    .button-icon {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    li {
+      flex: 1 1 calc(50% - 8px);
+    }
+
+    a {
+      width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+  }
+}
+
+#spacer {
+  height: 88px;
+  border-top: 1px solid var(--border);
+  @media (max-width: 1024px) {
+    height: 48px;
+  }
+}
+
+.ticks {
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -4.5px;
+    border: 5px solid transparent;
+  }
+
+  &::before {
+    left: 0;
+    border-left-color: var(--border);
+  }
+  &::after {
+    right: 0;
+    border-right-color: var(--border);
+  }
+}
+ 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\index.css ===== 
+@import "tailwindcss";
+
+/* ============================================
+   SCHPOT DESIGN TOKENS
+   ============================================ */
+@theme {
+  --color-cream: #f7f3ea;
+  --color-ink: #141414;
+  --color-brand: #e8222d;
+
+  --font-display: "Anton", sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-hard: 4px 4px 0 0 #141414;
+  --shadow-hard-sm: 3px 3px 0 0 #141414;
+  --shadow-hard-lg: 6px 6px 0 0 #141414;
+  --shadow-hard-red: 4px 4px 0 0 #e8222d;
+}
+
+/* ============================================
+   BASE
+   ============================================ */
+body {
+  @apply bg-cream text-ink antialiased font-sans;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink);
+  border: 2px solid var(--color-cream);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   COMPONENTS
+   ============================================ */
+@layer components {
+  .display {
+    @apply font-display uppercase tracking-wide;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-bold uppercase tracking-[0.15em] text-ink/50;
+  }
+  .eyebrow-boxed {
+    @apply inline-block border border-brand px-3 py-1 text-[11px] font-bold uppercase tracking-[0.15em] text-brand;
+  }
+
+  .card {
+    @apply border-2 border-ink bg-white;
+  }
+  .card-hover {
+    @apply transition-all hover:shadow-hard hover:-translate-x-0.5 hover:-translate-y-0.5;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-ink bg-brand
+      px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-white shadow-hard-sm
+      transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-hard
+      active:translate-x-0.5 active:translate-y-0.5 active:shadow-none
+      disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-ink bg-white
+      px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-ink shadow-hard-sm
+      transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-hard
+      active:translate-x-0.5 active:translate-y-0.5 active:shadow-none
+      disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-dark {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-ink bg-ink
+      px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-white shadow-hard-sm
+      transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-hard-red
+      active:translate-x-0.5 active:translate-y-0.5 active:shadow-none
+      disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-ghost {
+    @apply text-xs font-bold uppercase tracking-widest text-brand
+      hover:underline underline-offset-4;
+  }
+
+  .chip {
+    @apply border-2 border-ink/20 bg-white px-3 py-1.5 text-[10px] font-bold uppercase
+      tracking-widest text-ink/50 transition-colors hover:border-ink hover:text-ink;
+  }
+  .chip-active {
+    @apply border-2 border-ink bg-brand px-3 py-1.5 text-[10px] font-bold uppercase
+      tracking-widest text-white;
+  }
+  .chip-dark {
+    @apply border-2 border-ink bg-ink px-3 py-1.5 text-[10px] font-bold uppercase
+      tracking-widest text-white;
+  }
+
+  .input-field {
+    @apply w-full border-2 border-ink bg-white px-3 py-2.5 text-sm
+      transition-shadow placeholder:text-ink/30
+      focus:outline-none focus:shadow-hard-sm;
+  }
+  .field-label {
+    @apply mb-1 block text-[11px] font-bold uppercase tracking-[0.12em] text-ink/70;
+  }
+  .field-error {
+    @apply mt-1 text-xs font-medium text-brand;
+  }
+
+  .badge {
+    @apply inline-flex items-center border-2 border-ink px-2 py-0.5
+      text-[10px] font-bold uppercase tracking-widest;
+  }
+}
+
+/* ============================================
+   GRAPH-PAPER GRID — DRIFTING + CURSOR SPOTLIGHT
+   The base grid pans diagonally forever; a stronger
+   red grid is revealed in a circle that follows the
+   cursor (--mx / --my set from Layout.jsx).
+   ============================================ */
+@keyframes grid-drift {
+  from { background-position: 0 0; }
+  to { background-position: 56px 56px; }
+}
+
+.grid-bg {
+  position: relative;
+}
+
+/* Layer 1: faint ink grid, slowly drifting */
+.grid-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(20, 20, 20, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 20, 20, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  animation: grid-drift 14s linear infinite;
+}
+
+/* Layer 2: red grid revealed around the cursor — drifts in sync */
+.grid-bg::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(232, 34, 45, 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(232, 34, 45, 0.35) 1px, transparent 1px);
+  background-size: 56px 56px;
+  animation: grid-drift 14s linear infinite;
+  -webkit-mask-image: radial-gradient(
+    320px circle at var(--mx, 50vw) var(--my, 40vh),
+    black 0%,
+    rgba(0, 0, 0, 0.4) 55%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    320px circle at var(--mx, 50vw) var(--my, 40vh),
+    black 0%,
+    rgba(0, 0, 0, 0.4) 55%,
+    transparent 100%
+  );
+}
+
+/* Keep app content above the grid layers */
+.grid-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* No cursor on touch devices — hide the spotlight layer */
+@media (hover: none) {
+  .grid-bg::after {
+    display: none;
+  }
+}
+
+/* ============================================
+   MARQUEE TICKER
+   Duplicated content + translateX(-50%) = seamless loop.
+   Duration controlled per-instance via --marquee-duration.
+   ============================================ */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee-scroll var(--marquee-duration, 30s) linear infinite;
+  will-change: transform;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ============================================
+   ROTATING WORD FLIP
+   ============================================ */
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(60%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.word-in {
+  animation: word-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ============================================
+   ENTRANCE ANIMATION (optional utility)
+   Add .fade-up to any element for a subtle entry.
+   ============================================ */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fade-up 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* ============================================
+   ACCESSIBILITY & PRINT
+   Motion-sensitive users get a calm, static grid
+   and no decorative animation.
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .word-in,
+  .fade-up {
+    animation: none !important;
+  }
+  .grid-bg::before,
+  .grid-bg::after {
+    animation: none !important;
+  }
+  .grid-bg::after {
+    display: none;
+  }
+  .card-hover,
+  .btn-primary,
+  .btn-outline,
+  .btn-dark {
+    transition: none;
+  }
+}
+
+@media print {
+  .grid-bg::before,
+  .grid-bg::after,
+  .marquee-track {
+    display: none;
+  }
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\components\BookingDialog.jsx ===== 
+import { useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { X } from "lucide-react";
+import { toast } from "sonner";
+import { useBookSlot } from "../hooks/useBookings";
+import { fmtDate, fmtRange, getSavedEmail, saveEmail } from "../lib/utils";
+
+export default function BookingDialog({ slot, onClose }) {
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: { email: getSavedEmail() },
+  });
+  const book = useBookSlot();
+  const firstFieldRef = useRef(null);
+
+  // Escape to close + focus the first field on open
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && !book.isPending && onClose();
+    window.addEventListener("keydown", onKey);
+    firstFieldRef.current?.focus();
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose, book.isPending]);
+
+  const onSubmit = (values) =>
+    book.mutate({ slotId: slot.id, ...values }, {
+      onSuccess: () => {
+        saveEmail(values.email);
+        toast.success("Booking confirmed", {
+          description: `${slot.title} · ${fmtDate(slot.start_time)}`,
+        });
+        onClose();
+      },
+      onError: (err) => toast.error(err.message),
+    });
+
+  const { ref: nameRef, ...nameReg } = register("name", { required: "Name is required" });
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 sm:items-center sm:p-4"
+      onClick={() => !book.isPending && onClose()}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Book ${slot.title}`}
+    >
+      <div
+        className="w-full border-2 border-ink bg-cream p-6 shadow-hard sm:max-w-md"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="eyebrow mb-1">Book this slot</p>
+            <h2 className="display text-xl leading-tight">{slot.title}</h2>
+            <p className="mt-1 text-xs font-bold uppercase tracking-wider text-brand">
+              {fmtDate(slot.start_time)} · {fmtRange(slot.start_time, slot.end_time)}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            disabled={book.isPending}
+            aria-label="Close dialog"
+            className="border-2 border-ink bg-white p-1 transition-colors hover:bg-ink hover:text-white disabled:opacity-40"
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
+          <div>
+            <label className="field-label">Full name</label>
+            <input
+              className="input-field"
+              ref={(el) => { nameRef(el); firstFieldRef.current = el; }}
+              {...nameReg}
+            />
+            {errors.name && <p className="field-error">{errors.name.message}</p>}
+          </div>
+          <div>
+            <label className="field-label">Email</label>
+            <input
+              type="email"
+              className="input-field"
+              {...register("email", {
+                required: "Email is required",
+                pattern: { value: /^\S+@\S+\.\S+$/, message: "Enter a valid email" },
+              })}
+            />
+            {errors.email && <p className="field-error">{errors.email.message}</p>}
+          </div>
+          <div>
+            <label className="field-label">Phone (optional)</label>
+            <input className="input-field" {...register("phone")} />
+          </div>
+          <button disabled={book.isPending} className="btn-primary w-full">
+            {book.isPending ? "Booking…" : "Confirm booking"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\components\EmptyState.jsx ===== 
+export default function EmptyState({ icon: Icon, title, subtitle }) {
+  return (
+    <div className="flex flex-col items-center justify-center border-2 border-dashed border-ink/30 bg-white/50 py-16 text-center">
+      {Icon && <Icon size={28} className="text-ink/25 mb-3" strokeWidth={2} />}
+      <p className="font-bold uppercase tracking-wide text-sm">{title}</p>
+      {subtitle && <p className="mt-1 text-sm text-ink/40">{subtitle}</p>}
+    </div>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\components\ErrorBoundary.jsx ===== 
+import { Component } from "react";
+
+export default class ErrorBoundary extends Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    console.error("App error:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex flex-col items-center py-24 text-center">
+          <p className="eyebrow-boxed mb-6">Error</p>
+          <h1 className="display text-4xl md:text-5xl">
+            Something <span className="text-brand">broke.</span>
+          </h1>
+          <p className="mt-4 max-w-sm text-sm text-ink/50">
+            An unexpected error occurred. A reload usually fixes it.
+          </p>
+          <button onClick={() => window.location.reload()} className="btn-primary mt-8">
+            Reload page
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\components\Footer.jsx ===== 
+import { Mail, MessageCircle } from "lucide-react";
+
+const LINKS = [
+  { label: "What is Schpot?", href: "https://schpot.com" },
+  { label: "How it works?", href: "https://schpot.com" },
+  { label: "Host guide", href: "https://schpot.com" },
+  { label: "Contact", href: "mailto:contact@schpot.com" },
+];
+
+// Inline Instagram glyph (lucide-react removed brand icons)
+const InstagramIcon = ({ size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+  </svg>
+);
+
+export default function Footer() {
+  return (
+    <footer className="relative border-t-2 border-ink bg-ink text-white">
+      <div className="mx-auto grid max-w-7xl gap-12 px-5 py-14 md:grid-cols-[1fr_auto_auto] md:gap-20 md:px-10">
+        {/* Brand */}
+        <div>
+          <p className="display text-4xl text-brand">
+            Schpot<span className="text-white">.</span>
+          </p>
+          <p className="mt-3 max-w-xs text-sm text-white/50">
+            Curated spaces, by the hour.
+          </p>
+        </div>
+
+        {/* Links */}
+        <div>
+          <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+            Important links
+          </p>
+          <ul className="space-y-3">
+            {LINKS.map(({ label, href }) => (
+              <li key={label}>
+                <a href={href} target="_blank" rel="noreferrer"
+                  className="display text-base tracking-wider transition-colors hover:text-brand">
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Connect */}
+        <div>
+          <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+            Connect
+          </p>
+          <div className="flex gap-2.5">
+            <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"
+              className="border-2 border-white/25 p-2.5 transition-all hover:border-brand hover:bg-brand">
+              <InstagramIcon size={16} />
+            </a>
+            <a href="mailto:contact@schpot.com" aria-label="Email"
+              className="border-2 border-white/25 p-2.5 transition-all hover:border-brand hover:bg-brand">
+              <Mail size={16} />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="border-t border-white/10">
+        <p className="mx-auto max-w-7xl px-5 py-5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 md:px-10">
+          ©  Schpot · Built for the Schpot 
+        </p>
+      </div>
+
+      {/* Floating WhatsApp button */}
+      <a href="https://wa.me/919876543210?text=Hi%20Schpot!" target="_blank" rel="noreferrer"
+        aria-label="Chat on WhatsApp"
+        className="fixed bottom-5 right-5 z-40 border-2 border-ink bg-brand p-3 text-white shadow-hard transition-all hover:-translate-y-0.5 hover:shadow-hard-lg">
+        <MessageCircle size={20} />
+      </a>
+    </footer>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\components\Layout.jsx ===== 
+import { useEffect } from "react";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import {
+  CalendarDays,
+  LayoutDashboard,
+  PlusCircle,
+  ClipboardList,
+  Clock,
+  BookMarked,
+} from "lucide-react";
+import Footer from "./Footer";
+
+const USER_NAV = [
+  { to: "/", icon: Clock, text: "Available Slots" },
+  { to: "/my-bookings", icon: BookMarked, text: "My Bookings" },
+  { to: "/calendar", icon: CalendarDays, text: "Calendar" },
+];
+
+const OWNER_NAV = [
+  { to: "/owner", icon: LayoutDashboard, text: "Dashboard" },
+  { to: "/owner/create", icon: PlusCircle, text: "Create Slot" },
+  { to: "/owner/bookings", icon: ClipboardList, text: "Bookings" },
+];
+
+function ModeToggle({ isOwner, onSwitch }) {
+  return (
+    <div className="flex select-none items-center gap-3">
+      <button
+        onClick={() => onSwitch(false)}
+        className={`text-[11px] font-bold uppercase tracking-[0.15em] transition-colors ${
+          !isOwner ? "text-ink" : "text-ink/35 hover:text-ink/60"
+        }`}
+      >
+        User
+      </button>
+
+      <button
+        onClick={() => onSwitch(!isOwner)}
+        aria-label="Switch between user and owner mode"
+        className="relative h-5 w-10 border-2 border-ink bg-white"
+      >
+        <span
+          className={`absolute top-0 h-full w-1/2 bg-brand transition-all duration-200 ${
+            isOwner ? "left-1/2" : "left-0"
+          }`}
+        />
+      </button>
+
+      <button
+        onClick={() => onSwitch(true)}
+        className={`text-[11px] font-bold uppercase tracking-[0.15em] transition-colors ${
+          isOwner ? "text-ink" : "text-ink/35 hover:text-ink/60"
+        }`}
+      >
+        Owner
+      </button>
+    </div>
+  );
+}
+
+export default function Layout() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isOwner = location.pathname.startsWith("/owner");
+  const nav = isOwner ? OWNER_NAV : USER_NAV;
+
+  // Feed cursor position to the grid-spotlight CSS (--mx / --my)
+  useEffect(() => {
+    const move = (e) => {
+      document.documentElement.style.setProperty("--mx", `${e.clientX}px`);
+      document.documentElement.style.setProperty("--my", `${e.clientY}px`);
+    };
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+
+  const switchMode = (toOwner) => {
+    if (toOwner !== isOwner) navigate(toOwner ? "/owner" : "/");
+  };
+
+  return (
+    <div className="grid-bg flex min-h-screen flex-col">
+      {/* Header — full-bleed, logo at viewport edge */}
+      <header className="border-b-2 border-brand bg-cream">
+        <div className="flex items-center justify-between px-5 py-4 md:px-8">
+          <span className="display text-3xl text-brand">
+            Schpot<span className="text-ink">.</span>
+            <span className="ml-3 hidden align-middle font-sans text-[10px] font-bold tracking-[0.25em] text-ink/40 sm:inline">
+              SCHEDULER
+            </span>
+          </span>
+          <ModeToggle isOwner={isOwner} onSwitch={switchMode} />
+        </div>
+      </header>
+
+      {/* Tabs — truly centered (w-max + mx-auto), scrollable on mobile */}
+      <div className="border-b border-ink/10 bg-cream/80 backdrop-blur-sm">
+        <nav className="mx-auto flex w-max max-w-full gap-2 overflow-x-auto px-5 py-3 md:px-8">
+          {nav.map(({ to, icon: Icon, text }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === "/" || to === "/owner"}
+              className={({ isActive }) =>
+                `flex shrink-0 items-center gap-2.5 border-2 px-6 py-2.5 text-sm font-bold uppercase tracking-wider transition-all ${
+                  isActive
+                    ? "border-ink bg-ink text-white shadow-hard-sm"
+                    : "border-transparent text-ink/50 hover:border-ink hover:text-ink"
+                }`
+              }
+            >
+              <Icon size={16} strokeWidth={2.5} /> {text}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
+
+      {/* Page content */}
+      <main className="mx-auto w-full max-w-7xl flex-1 px-5 py-12 md:px-10 md:py-16">
+        <Outlet />
+      </main>
+
+      <Footer />
+    </div>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\components\Marquee.jsx ===== 
+export default function Marquee({ items, variant = "dark", speed = 30 }) {
+  const row = [...items, ...items]; // duplicate for a seamless loop
+  const styles =
+    variant === "red"
+      ? "border-ink bg-brand text-white"
+      : "border-ink bg-ink text-white";
+
+  return (
+    <div className={`overflow-hidden border-y-2 py-3 ${styles}`}>
+      <div
+        className="marquee-track flex w-max items-center"
+        style={{ "--marquee-duration": `${speed}s` }}
+      >
+        {row.map((item, idx) => (
+          <span
+            key={idx}
+            className="display mx-6 flex shrink-0 items-center gap-6 whitespace-nowrap text-base tracking-[0.15em]"
+          >
+            {item}
+            <span className={variant === "red" ? "text-ink" : "text-brand"}>✦</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\components\RotatingText.jsx ===== 
+import { useEffect, useState } from "react";
+
+export default function RotatingText({ words, interval = 2200, className = "" }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setI((p) => (p + 1) % words.length), interval);
+    return () => clearInterval(t);
+  }, [words.length, interval]);
+  return (
+    <span className={`inline-block overflow-hidden align-bottom ${className}`}>
+      <span key={i} className="word-in inline-block">{words[i]}</span>
+    </span>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\components\SkeletonCard.jsx ===== 
+export default function SkeletonCard() {
+  return (
+    <div className="card p-5">
+      <div className="skeleton h-6 w-3/4" />
+      <div className="skeleton mt-2 h-3 w-1/2" />
+      <div className="mt-5 space-y-2">
+        <div className="skeleton h-3 w-2/3" />
+        <div className="skeleton h-3 w-1/2" />
+        <div className="skeleton h-3 w-3/5" />
+      </div>
+      <div className="skeleton mt-6 h-10 w-full" />
+    </div>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\components\SlotCard.jsx ===== 
+import { MapPin, Clock, Users } from "lucide-react";
+import { fmtDate, fmtRange, spotsLeft } from "../lib/utils";
+import StatusBadge from "./StatusBadge";
+
+export default function SlotCard({ slot, action }) {
+  const left = spotsLeft(slot);
+  return (
+    <div className="card card-hover p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="display text-lg leading-tight">{slot.title}</h3>
+          <p className="mt-1 text-xs font-bold uppercase tracking-wider text-ink/50">
+            {fmtDate(slot.start_time)}
+          </p>
+        </div>
+        <StatusBadge status={left > 0 ? "open" : "full"} />
+      </div>
+
+      <div className="mt-4 space-y-1.5 text-sm text-ink/70">
+        <p className="flex items-center gap-2">
+          <Clock size={14} className="text-brand" strokeWidth={2.5} />
+          {fmtRange(slot.start_time, slot.end_time)}
+        </p>
+        {slot.location && (
+          <p className="flex items-center gap-2">
+            <MapPin size={14} className="text-brand" strokeWidth={2.5} /> {slot.location}
+          </p>
+        )}
+        <p className="flex items-center gap-2">
+          <Users size={14} className="text-brand" strokeWidth={2.5} />
+          <span className="font-semibold">{left} of {slot.capacity}</span>
+          spot{slot.capacity > 1 ? "s" : ""} left
+        </p>
+      </div>
+
+      {slot.description && (
+        <p className="mt-3 text-sm text-ink/50 line-clamp-2">{slot.description}</p>
+      )}
+
+      {action && <div className="mt-5 border-t-2 border-ink/10 pt-4">{action}</div>}
+    </div>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\components\StatusBadge.jsx ===== 
+export default function StatusBadge({ status }) {
+  const styles = {
+    confirmed: "bg-ink text-white",
+    cancelled: "bg-white text-ink/40",
+    full: "bg-white text-brand",
+    open: "bg-brand text-white",
+  };
+  return (
+    <span className={`inline-flex border-2 border-ink px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest ${styles[status] || styles.open}`}>
+      {status}
+    </span>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\hooks\useBookings.js ===== 
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "../lib/supabase";
+
+export function useAllBookings() {
+  return useQuery({
+    queryKey: ["bookings"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("bookings")
+        .select("*, slots(*)")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+}
+
+export function useMyBookings(email) {
+  return useQuery({
+    queryKey: ["bookings", email],
+    enabled: !!email,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("bookings")
+        .select("*, slots(*)")
+        .eq("email", email.toLowerCase())
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+}
+
+export function useBookSlot() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ slotId, name, email, phone }) => {
+      const { data, error } = await supabase.rpc("book_slot", {
+        p_slot_id: slotId,
+        p_name: name,
+        p_email: email,
+        p_phone: phone || null,
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries(),
+  });
+}
+
+export function useCancelBooking() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id) => {
+      const { error } = await supabase
+        .from("bookings").update({ status: "cancelled" }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries(),
+  });
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\hooks\useSlots.js ===== 
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "../lib/supabase";
+
+export function useSlots() {
+  return useQuery({
+    queryKey: ["slots"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("slots")
+        .select("*, bookings(id, status, email)")
+        .order("start_time", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
+}
+
+export function useCreateSlot() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (slot) => {
+      const { data, error } = await supabase
+        .from("slots").insert(slot).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries(),
+  });
+}
+
+export function useCreateSlots() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (slots) => {
+      const { data, error } = await supabase
+        .from("slots").insert(slots).select();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries(),
+  });
+}
+
+export function useDeleteSlot() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id) => {
+      const { error } = await supabase.from("slots").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries(),
+  });
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\lib\lib.js ===== 
+ 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\lib\mockDb.js ===== 
+// src/lib/mockDb.js — temporary in-memory database (swapped for Supabase later)
+
+const slotTime = (hoursFromNow, mins = 60) => {
+  const start = new Date(Date.now() + hoursFromNow * 3600 * 1000);
+  const end = new Date(start.getTime() + mins * 60 * 1000);
+  return { start_time: start.toISOString(), end_time: end.toISOString() };
+};
+
+let slots = [
+  {
+    id: "1",
+    title: "Studio A — Photoshoot Hour",
+    location: "Indiranagar, BLR",
+    description: "Natural light studio with backdrops.",
+    capacity: 2,
+    ...slotTime(26),
+  },
+  {
+    id: "2",
+    title: "The Create Room",
+    location: "Koramangala, BLR",
+    description: "Music room with full backline.",
+    capacity: 1,
+    ...slotTime(30),
+  },
+  {
+    id: "3",
+    title: "Rooftop Terrace Evening",
+    location: "HSR Layout, BLR",
+    description: "Cozy rooftop with city views.",
+    capacity: 5,
+    ...slotTime(50, 120),
+  },
+];
+
+let bookings = [
+  {
+    id: "b1",
+    slot_id: "2",
+    name: "Ansh Sharma",
+    email: "ansh@test.com",
+    phone: "9876543210",
+    status: "confirmed",
+    created_at: new Date().toISOString(),
+  },
+];
+
+const withBookings = (slot) => ({
+  ...slot,
+  bookings: bookings.filter((b) => b.slot_id === slot.id),
+});
+
+const withSlot = (booking) => ({
+  ...booking,
+  slots: slots.find((s) => s.id === booking.slot_id),
+});
+
+export const db = {
+  getSlots: async () =>
+    slots.map(withBookings).sort((a, b) => a.start_time.localeCompare(b.start_time)),
+
+  createSlot: async (slot) => {
+    slots.push({ ...slot, id: crypto.randomUUID() });
+  },
+
+  getBookings: async () => bookings.map(withSlot),
+
+  getBookingsByEmail: async (email) =>
+    bookings.filter((b) => b.email === email.toLowerCase()).map(withSlot),
+
+  bookSlot: async ({ slotId, name, email, phone }) => {
+    const slot = slots.find((s) => s.id === slotId);
+    if (!slot) throw new Error("Slot not found");
+
+    const confirmed = bookings.filter(
+      (b) => b.slot_id === slotId && b.status === "confirmed"
+    );
+    if (confirmed.length >= slot.capacity)
+      throw new Error("This slot is fully booked");
+    if (confirmed.some((b) => b.email === email.toLowerCase()))
+      throw new Error("You have already booked this slot");
+
+    bookings.push({
+      id: crypto.randomUUID(),
+      slot_id: slotId,
+      name,
+      email: email.toLowerCase(),
+      phone,
+      status: "confirmed",
+      created_at: new Date().toISOString(),
+    });
+  },
+
+  cancelBooking: async (id) => {
+    const b = bookings.find((x) => x.id === id);
+    if (b) b.status = "cancelled";
+  },
+}; 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\lib\supabase.js ===== 
+import { createClient } from "@supabase/supabase-js";
+
+export const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+); 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\lib\utils.js ===== 
+import { format, parseISO, isBefore } from "date-fns";
+
+export const fmtDate = (iso) => format(parseISO(iso), "EEE, d MMM yyyy");
+export const fmtTime = (iso) => format(parseISO(iso), "h:mm a");
+export const fmtRange = (s, e) => `${fmtTime(s)} – ${fmtTime(e)}`;
+export const isPast = (iso) => isBefore(parseISO(iso), new Date());
+
+export const confirmedCount = (slot) =>
+  (slot.bookings || []).filter((b) => b.status === "confirmed").length;
+export const spotsLeft = (slot) => slot.capacity - confirmedCount(slot);
+
+export const getSavedEmail = () => localStorage.getItem("schpot_email") || "";
+export const saveEmail = (e) => localStorage.setItem("schpot_email", e.toLowerCase()); 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\pages\CalendarPage.jsx ===== 
+import { useState } from "react";
+import { addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isToday, parseISO, startOfMonth, startOfWeek } from "date-fns";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useSlots } from "../hooks/useSlots";
+import { fmtRange, spotsLeft } from "../lib/utils";
+
+export default function CalendarPage() {
+  const { data: slots = [] } = useSlots();
+  const [month, setMonth] = useState(new Date());
+  const [day, setDay] = useState(new Date());
+
+  const days = eachDayOfInterval({ start: startOfWeek(startOfMonth(month)), end: endOfWeek(endOfMonth(month)) });
+  const slotsOn = (d) => slots.filter((s) => isSameDay(parseISO(s.start_time), d));
+  const daySlots = slotsOn(day);
+
+  return (
+    <div>
+      <p className="eyebrow-boxed mb-5">Month view</p>
+      <h1 className="display text-4xl md:text-5xl">Calendar</h1>
+
+      <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
+        {/* Month grid */}
+        <div className="card p-5">
+          <div className="mb-4 flex items-center justify-between">
+            <p className="display text-2xl">{format(month, "MMMM yyyy")}</p>
+            <div className="flex gap-1.5">
+              <button onClick={() => setMonth(addMonths(month, -1))} className="border-2 border-ink p-2 transition-colors hover:bg-ink hover:text-white"><ChevronLeft size={14} /></button>
+              <button onClick={() => setMonth(addMonths(month, 1))} className="border-2 border-ink p-2 transition-colors hover:bg-ink hover:text-white"><ChevronRight size={14} /></button>
+            </div>
+          </div>
+          <div className="mb-1 grid grid-cols-7 text-center text-[10px] font-bold uppercase text-ink/40">
+            {["Su","Mo","Tu","We","Th","Fr","Sa"].map((d) => <div key={d}>{d}</div>)}
+          </div>
+          <div className="grid grid-cols-7 gap-1">
+            {days.map((d) => {
+              const count = slotsOn(d).length;
+              const sel = isSameDay(d, day);
+              return (
+                <button key={d.toISOString()} onClick={() => setDay(d)}
+                  className={`relative aspect-square text-sm transition-colors
+                    ${!isSameMonth(d, month) ? "text-ink/25" : ""}
+                    ${sel ? "border-2 border-ink bg-brand font-bold text-white" : "hover:bg-ink/5"}
+                    ${isToday(d) && !sel ? "border-2 border-ink/30" : ""}`}>
+                  {format(d, "d")}
+                  {count > 0 && <span className={`absolute bottom-1.5 left-1/2 h-1.5 w-1.5 -translate-x-1/2 ${sel ? "bg-white" : "bg-brand"}`} />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Day panel */}
+        <div>
+          <div className="border-b-2 border-ink pb-3">
+            <p className="display text-2xl">{format(day, "EEEE")}</p>
+            <p className="eyebrow mt-1">{format(day, "d MMMM yyyy")}</p>
+          </div>
+          <div className="mt-4 space-y-2">
+            {daySlots.length === 0 && <p className="text-sm text-ink/40">No slots on this day.</p>}
+            {daySlots.map((s) => (
+              <div key={s.id} className="card card-hover p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-sm font-bold">{s.title}</p>
+                  <span className={`badge ${spotsLeft(s) > 0 ? "bg-brand text-white" : "bg-white text-brand"}`}>
+                    {spotsLeft(s) > 0 ? `${spotsLeft(s)} open` : "Full"}
+                  </span>
+                </div>
+                <p className="mt-1 text-sm text-ink/50">{fmtRange(s.start_time, s.end_time)}</p>
+                {s.location && <p className="text-sm text-ink/40">{s.location}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\pages\NotFound.jsx ===== 
+import { Link } from "react-router-dom";
+
+function EmptySchpot() {
+  return (
+    <div className="relative mb-10 fade-up" aria-hidden="true">
+      <svg
+        width="180"
+        height="150"
+        viewBox="0 0 180 150"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* Hard offset shadow */}
+        <rect x="26" y="26" width="140" height="110" fill="#141414" />
+        {/* Slot frame — dashed = nothing here */}
+        <rect
+          x="14" y="14" width="140" height="110"
+          fill="#ffffff" stroke="#141414" strokeWidth="4"
+          strokeDasharray="12 8"
+        />
+        {/* Red X — the missing schpot */}
+        <line x1="54" y1="44" x2="114" y2="94" stroke="#e8222d" strokeWidth="7" strokeLinecap="square" />
+        <line x1="114" y1="44" x2="54" y2="94" stroke="#e8222d" strokeWidth="7" strokeLinecap="square" />
+        {/* Ground line */}
+        <line x1="34" y1="112" x2="134" y2="112" stroke="#141414" strokeWidth="3" />
+      </svg>
+
+      {/* VACANT tag, tilted like a sticker */}
+      <span className="display absolute -right-6 top-2 rotate-6 border-2 border-ink bg-brand px-2.5 py-1 text-xs tracking-[0.2em] text-white shadow-hard-sm">
+        Vacant
+      </span>
+    </div>
+  );
+}
+
+export default function NotFound() {
+  return (
+    <div className="flex flex-col items-center py-16 text-center md:py-20">
+      <EmptySchpot />
+
+      <p className="eyebrow-boxed mb-6">404</p>
+      <h1 className="display text-5xl leading-[0.95] md:text-7xl">
+        Lost your
+        <br />
+        <span className="text-brand">Schpot?</span>
+      </h1>
+      <p className="mt-6 max-w-sm text-sm text-ink/50">
+        This page doesn't exist. Let's get you back to the good stuff.
+      </p>
+      <Link to="/" className="btn-primary mt-8">
+        Back to available slots
+      </Link>
+    </div>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\pages\Owner\Bookings.jsx ===== 
+import { useState } from "react";
+import { ClipboardList, Search } from "lucide-react";
+import { toast } from "sonner";
+import { useAllBookings, useCancelBooking } from "../../hooks/useBookings";
+import { fmtDate, fmtRange } from "../../lib/utils";
+import StatusBadge from "../../components/StatusBadge";
+import EmptyState from "../../components/EmptyState";
+
+const TABS = ["all", "confirmed", "cancelled"];
+
+export default function Bookings() {
+  const { data: bookings = [] } = useAllBookings();
+  const cancel = useCancelBooking();
+  const [tab, setTab] = useState("all");
+  const [q, setQ] = useState("");
+
+  const filtered = bookings
+    .filter((b) => (tab === "all" ? true : b.status === tab))
+    .filter((b) =>
+      q ? `${b.name} ${b.email} ${b.slots?.title}`.toLowerCase().includes(q.toLowerCase()) : true
+    );
+
+  return (
+    <div>
+      <p className="eyebrow-boxed mb-5">Owner console</p>
+      <h1 className="display text-4xl md:text-5xl">Bookings</h1>
+
+      <div className="mt-8 flex flex-wrap items-center gap-3">
+        <div className="flex gap-1.5">
+          {TABS.map((t) => (
+            <button key={t} onClick={() => setTab(t)} className={`${tab === t ? "chip-active" : "chip"} capitalize`}>
+              {t}
+            </button>
+          ))}
+        </div>
+        <div className="relative ml-auto w-full sm:w-64">
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink/30" />
+          <input value={q} onChange={(e) => setQ(e.target.value)}
+            placeholder="Search name, email, slot…" className="input-field py-2 pl-9 text-xs" />
+        </div>
+      </div>
+
+      <div className="mt-6 space-y-2">
+        {filtered.length === 0 && <EmptyState icon={ClipboardList} title="No bookings here" />}
+        {filtered.map((b) => (
+          <div key={b.id} className="card flex flex-wrap items-center justify-between gap-3 p-4">
+            <div>
+              <p className="text-sm font-bold">
+                {b.name} <span className="font-normal text-ink/40">· {b.email}{b.phone ? ` · ${b.phone}` : ""}</span>
+              </p>
+              <p className="text-sm text-ink/50">
+                {b.slots?.title} · {fmtDate(b.slots.start_time)} · {fmtRange(b.slots.start_time, b.slots.end_time)}
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <StatusBadge status={b.status} />
+              {b.status === "confirmed" && (
+                <button onClick={() => cancel.mutate(b.id, { onSuccess: () => toast.success("Cancelled") })}
+                  className="btn-ghost">Cancel</button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\pages\Owner\CreateSlot.jsx ===== 
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { addDays, addWeeks, format } from "date-fns";
+import { Clock, MapPin, Users, Minus, Plus, Repeat } from "lucide-react";
+import { toast } from "sonner";
+import { useCreateSlot, useCreateSlots } from "../../hooks/useSlots";
+
+const DURATIONS = [30, 60, 90, 120];
+const WEEKDAYS = [
+  { label: "S", value: 0 },
+  { label: "M", value: 1 },
+  { label: "T", value: 2 },
+  { label: "W", value: 3 },
+  { label: "T", value: 4 },
+  { label: "F", value: 5 },
+  { label: "S", value: 6 },
+];
+
+const addMins = (t, m) => {
+  if (!t) return "";
+  const [h, min] = t.split(":").map(Number);
+  const d = new Date(2000, 0, 1, h, min + m);
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+};
+
+export default function CreateSlot() {
+  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+    defaultValues: { capacity: 1, date: format(new Date(), "yyyy-MM-dd") },
+  });
+  const create = useCreateSlot();
+  const createMany = useCreateSlots();
+  const navigate = useNavigate();
+  const v = watch();
+
+  const [repeat, setRepeat] = useState(false);
+  const [repeatDays, setRepeatDays] = useState([]); // JS day numbers: 0=Sun … 6=Sat
+  const [repeatUntil, setRepeatUntil] = useState(
+    format(addWeeks(new Date(), 2), "yyyy-MM-dd")
+  );
+
+  const toggleDay = (d) =>
+    setRepeatDays((prev) =>
+      prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d].sort()
+    );
+
+  const onSubmit = ({ title, description, location, date, start, end, capacity }) => {
+    const base = { title, description, location, capacity: Number(capacity) };
+    const mk = (d) => ({
+      ...base,
+      start_time: new Date(`${d}T${start}`).toISOString(),
+      end_time: new Date(`${d}T${end}`).toISOString(),
+    });
+
+    // Validate times using the first date
+    const first = mk(date);
+    if (new Date(first.end_time) <= new Date(first.start_time))
+      return toast.error("End time must be after start time");
+
+    // --- One-off slot ---
+    if (!repeat) {
+      if (new Date(first.start_time) <= new Date())
+        return toast.error("Slot must be in the future");
+      return create.mutate(first, {
+        onSuccess: () => { toast.success("Slot created"); navigate("/owner"); },
+        onError: (e) => toast.error(e.message),
+      });
+    }
+
+    // --- Repeating: materialize one row per matching day ---
+    if (repeatDays.length === 0)
+      return toast.error("Pick at least one weekday to repeat on");
+    if (new Date(repeatUntil) < new Date(date))
+      return toast.error("'Repeat until' must be on or after the start date");
+
+    const recurrence_id = crypto.randomUUID();
+    const slots = [];
+    let cursor = new Date(`${date}T00:00`);
+    const until = new Date(`${repeatUntil}T23:59`);
+
+    while (cursor <= until) {
+      if (repeatDays.includes(cursor.getDay())) {
+        const d = format(cursor, "yyyy-MM-dd");
+        const occ = mk(d);
+        if (new Date(occ.start_time) > new Date())
+          slots.push({ ...occ, recurrence_id });
+      }
+      cursor = addDays(cursor, 1);
+    }
+
+    if (slots.length === 0)
+      return toast.error("No future occurrences in that range");
+    if (slots.length > 100)
+      return toast.error("That's over 100 slots — shorten the date range");
+
+    createMany.mutate(slots, {
+      onSuccess: (data) => {
+        toast.success(`Created ${data.length} repeating slots`);
+        navigate("/owner");
+      },
+      onError: (e) => toast.error(e.message),
+    });
+  };
+
+  const isPending = create.isPending || createMany.isPending;
+
+  return (
+    <div>
+      <p className="eyebrow-boxed mb-5">Owner console</p>
+      <h1 className="display text-4xl md:text-5xl">Create Slot</h1>
+      <p className="mt-3 max-w-md text-sm text-ink/50">Publish a bookable time slot. Guests see exactly what's in the preview.</p>
+
+      <div className="mt-10 grid items-start gap-8 lg:grid-cols-[1fr_360px]">
+        <form onSubmit={handleSubmit(onSubmit)} className="card space-y-5 p-6 md:p-8">
+          <div>
+            <label className="field-label">Title</label>
+            <input className="input-field" placeholder="Studio A — Photoshoot Hour"
+              {...register("title", { required: "Title is required" })} />
+            {errors.title && <p className="field-error">{errors.title.message}</p>}
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label className="field-label">Location</label>
+              <input className="input-field" placeholder="Indiranagar, Bengaluru" {...register("location")} />
+            </div>
+            <div>
+              <label className="field-label">Capacity</label>
+              <div className="flex">
+                <button type="button" onClick={() => setValue("capacity", Math.max(1, Number(v.capacity) - 1))}
+                  className="border-2 border-ink bg-white px-3 transition-colors hover:bg-ink hover:text-white"><Minus size={14} /></button>
+                <input type="number" min={1} className="input-field border-x-0 text-center"
+                  {...register("capacity", { required: true, min: 1 })} />
+                <button type="button" onClick={() => setValue("capacity", Number(v.capacity) + 1)}
+                  className="border-2 border-ink bg-white px-3 transition-colors hover:bg-ink hover:text-white"><Plus size={14} /></button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label className="field-label">Description</label>
+            <textarea rows={2} className="input-field" placeholder="What makes this slot special?" {...register("description")} />
+          </div>
+
+          <div>
+            <label className="field-label">Date</label>
+            <div className="mb-2 flex gap-1.5">
+              {[0, 1, 2].map((i) => {
+                const d = format(addDays(new Date(), i), "yyyy-MM-dd");
+                const active = v.date === d;
+                return (
+                  <button type="button" key={i} onClick={() => setValue("date", d)}
+                    className={active ? "chip-active" : "chip"}>
+                    {i === 0 ? "Today" : i === 1 ? "Tomorrow" : format(addDays(new Date(), i), "EEE d")}
+                  </button>
+                );
+              })}
+            </div>
+            <input type="date" className="input-field" {...register("date", { required: "Date is required" })} />
+            {errors.date && <p className="field-error">{errors.date.message}</p>}
+            {repeat && (
+              <p className="mt-1 text-xs text-ink/40">With repeat on, this is the first day of the series.</p>
+            )}
+          </div>
+
+          <div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="field-label">Start time</label>
+                <input type="time" className="input-field" {...register("start", { required: "Required" })} />
+                {errors.start && <p className="field-error">{errors.start.message}</p>}
+              </div>
+              <div>
+                <label className="field-label">End time</label>
+                <input type="time" className="input-field" {...register("end", { required: "Required" })} />
+                {errors.end && <p className="field-error">{errors.end.message}</p>}
+              </div>
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-1.5">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-ink/40">Duration:</span>
+              {DURATIONS.map((m) => {
+                const active = v.start && v.end === addMins(v.start, m);
+                return (
+                  <button type="button" key={m} disabled={!v.start}
+                    onClick={() => setValue("end", addMins(v.start, m))}
+                    className={`${active ? "chip-active" : "chip"} disabled:opacity-40`}>
+                    {m >= 60 ? `${Math.floor(m / 60)}h${m % 60 ? "30" : ""}` : `${m}m`}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* REPEAT WEEKLY */}
+          <div className="border-t-2 border-ink/10 pt-5">
+            <button type="button" onClick={() => setRepeat(!repeat)}
+              className={`flex items-center gap-2 ${repeat ? "chip-active" : "chip"}`}>
+              <Repeat size={12} /> Repeat weekly
+            </button>
+
+            {repeat && (
+              <div className="mt-4 space-y-4">
+                <div>
+                  <label className="field-label">Repeat on</label>
+                  <div className="flex gap-1.5">
+                    {WEEKDAYS.map((d) => (
+                      <button type="button" key={d.value} onClick={() => toggleDay(d.value)}
+                        className={repeatDays.includes(d.value) ? "chip-active" : "chip"}>
+                        {d.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="field-label">Repeat until</label>
+                  <input type="date" className="input-field" value={repeatUntil}
+                    onChange={(e) => setRepeatUntil(e.target.value)} />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <button disabled={isPending} className="btn-primary w-full">
+            {isPending ? "Creating…" : repeat ? "Create repeating slots" : "Create slot"}
+          </button>
+        </form>
+
+        {/* LIVE PREVIEW */}
+        <div className="lg:sticky lg:top-8">
+          <p className="eyebrow mb-3">Live preview</p>
+          <div className="card shadow-hard p-6">
+            <div className="flex items-start justify-between gap-3">
+              <h3 className="display text-xl leading-tight">{v.title || "Untitled slot"}</h3>
+              <span className="badge bg-brand text-white">Open</span>
+            </div>
+            <p className="mt-1 text-xs font-bold uppercase tracking-wider text-ink/50">
+              {v.date ? format(new Date(v.date), "EEE, d MMM yyyy") : "Pick a date"}
+              {repeat && repeatDays.length > 0 && " · repeats weekly"}
+            </p>
+            <div className="mt-4 space-y-1.5 text-sm text-ink/70">
+              <p className="flex items-center gap-2"><Clock size={14} className="text-brand" />{v.start && v.end ? `${v.start} – ${v.end}` : "Set times"}</p>
+              <p className="flex items-center gap-2"><MapPin size={14} className="text-brand" />{v.location || "Add a location"}</p>
+              <p className="flex items-center gap-2"><Users size={14} className="text-brand" />{v.capacity || 1} spot{v.capacity > 1 ? "s" : ""}</p>
+            </div>
+            {v.description && <p className="mt-3 text-sm text-ink/50">{v.description}</p>}
+            <div className="mt-5 border-t-2 border-ink/10 pt-4">
+              <div className="btn-primary pointer-events-none w-full opacity-90">Book slot</div>
+            </div>
+          </div>
+          <p className="mt-3 text-xs text-ink/40">This is exactly how guests will see it.</p>
+        </div>
+      </div>
+    </div>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\pages\Owner\Dashboard.jsx ===== 
+import { Link } from "react-router-dom";
+import { addDays, format, isSameDay, parseISO } from "date-fns";
+import { CalendarDays, Users, TrendingUp, PlusCircle, ArrowRight } from "lucide-react";
+import { useSlots } from "../../hooks/useSlots";
+import { useAllBookings } from "../../hooks/useBookings";
+import { fmtDate, fmtRange, isPast, confirmedCount } from "../../lib/utils";
+import StatusBadge from "../../components/StatusBadge";
+
+const Stat = ({ icon: Icon, label, value, to, hint }) => (
+  <Link to={to} className="card card-hover group p-6">
+    <div className="flex items-center gap-2 text-ink/40">
+      <Icon size={14} />
+      <p className="text-[10px] font-bold uppercase tracking-widest">{label}</p>
+    </div>
+    <p className="display mt-3 text-5xl text-brand">{value}</p>
+    <p className="mt-2 flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-ink/30 transition-colors group-hover:text-ink/60">
+      {hint} <ArrowRight size={10} />
+    </p>
+  </Link>
+);
+
+export default function Dashboard() {
+  const { data: slots = [] } = useSlots();
+  const { data: bookings = [] } = useAllBookings();
+
+  const upcoming = slots.filter((s) => !isPast(s.start_time));
+  const confirmed = bookings.filter((b) => b.status === "confirmed");
+  const cap = upcoming.reduce((a, s) => a + s.capacity, 0);
+  const filled = upcoming.reduce((a, s) => a + confirmedCount(s), 0);
+  const util = cap ? Math.round((filled / cap) * 100) : 0;
+
+  const week = Array.from({ length: 7 }, (_, i) => addDays(new Date(), i));
+  const slotsOn = (d) => upcoming.filter((s) => isSameDay(parseISO(s.start_time), d));
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="eyebrow-boxed mb-5">Owner console</p>
+          <h1 className="display text-4xl md:text-5xl">Dashboard</h1>
+        </div>
+        <Link to="/owner/create" className="btn-primary"><PlusCircle size={14} /> New slot</Link>
+      </div>
+
+      <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <Stat icon={CalendarDays} label="Upcoming slots" value={upcoming.length} to="/calendar" hint="View calendar" />
+        <Stat icon={Users} label="Confirmed bookings" value={confirmed.length} to="/owner/bookings" hint="View bookings" />
+        <Stat icon={TrendingUp} label="Utilization" value={`${util}%`} to="/owner/bookings" hint={`${filled}/${cap || 0} spots filled`} />
+      </div>
+
+      <p className="eyebrow mt-14 mb-4">Next 7 days</p>
+      <div className="grid grid-cols-7 gap-2">
+        {week.map((d) => {
+          const n = slotsOn(d).length;
+          return (
+            <div key={d.toISOString()} className={`border-2 p-3 text-center ${n ? "border-ink bg-white shadow-hard-sm" : "border-ink/15 bg-white/40"}`}>
+              <p className="text-[9px] font-bold uppercase tracking-widest text-ink/40">{format(d, "EEE")}</p>
+              <p className="display text-2xl">{format(d, "d")}</p>
+              <p className={`text-[9px] font-bold uppercase ${n ? "text-brand" : "text-ink/25"}`}>
+                {n ? `${n} slot${n > 1 ? "s" : ""}` : "—"}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="mt-14 grid gap-10 lg:grid-cols-2">
+        <div>
+          <p className="eyebrow mb-4">Upcoming slots</p>
+          <div className="space-y-3">
+            {upcoming.length === 0 && <p className="text-sm text-ink/40">Nothing scheduled yet.</p>}
+            {upcoming.slice(0, 5).map((s) => {
+              const booked = confirmedCount(s);
+              const pct = Math.round((booked / s.capacity) * 100);
+              return (
+                <div key={s.id} className="card p-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-bold">{s.title}</p>
+                      <p className="text-sm text-ink/50">{fmtDate(s.start_time)} · {fmtRange(s.start_time, s.end_time)}</p>
+                    </div>
+                    <p className="shrink-0 text-xs font-bold uppercase tracking-wider text-ink/50">{booked}/{s.capacity}</p>
+                  </div>
+                  <div className="mt-3 h-2 border-2 border-ink bg-white">
+                    <div className={`h-full ${pct === 100 ? "bg-ink" : "bg-brand"}`} style={{ width: `${pct}%` }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="eyebrow">Recent bookings</p>
+            <Link to="/owner/bookings" className="btn-ghost">View all</Link>
+          </div>
+          <div className="space-y-3">
+            {bookings.length === 0 && <p className="text-sm text-ink/40">No bookings yet.</p>}
+            {bookings.slice(0, 5).map((b) => (
+              <div key={b.id} className="card flex items-center justify-between p-4">
+                <div>
+                  <p className="text-sm font-bold">{b.name} <span className="font-normal text-ink/40">· {b.email}</span></p>
+                  <p className="text-sm text-ink/50">{b.slots?.title} · {fmtDate(b.slots.start_time)}</p>
+                </div>
+                <StatusBadge status={b.status} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\pages\user\AvailableSlots.jsx ===== 
+import { useRef, useState } from "react";
+import { CalendarX, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { useSlots } from "../../hooks/useSlots";
+import { isPast, spotsLeft } from "../../lib/utils";
+import SlotCard from "../../components/SlotCard";
+import BookingDialog from "../../components/BookingDialog";
+import EmptyState from "../../components/EmptyState";
+import RotatingText from "../../components/RotatingText";
+import Marquee from "../../components/Marquee";
+
+const ACTIVITIES = ["Photoshoot", "Podcast", "Workshop", "Supper Club", "Screening", "Co-working"];
+
+export default function AvailableSlots() {
+  const { data: slots = [], isLoading } = useSlots();
+  const [selected, setSelected] = useState(null);
+  const railRef = useRef(null);
+  const available = slots.filter((s) => !isPast(s.start_time) && spotsLeft(s) > 0);
+  const totalSpots = available.reduce((a, s) => a + spotsLeft(s), 0);
+
+  const scroll = (dir) =>
+    railRef.current?.scrollBy({ left: dir * 360, behavior: "smooth" });
+
+  return (
+    <div>
+      {/* HERO */}
+      <div className="grid items-end gap-10 pb-14 md:grid-cols-[1fr_auto] md:pb-20">
+        <div>
+          <p className="eyebrow-boxed mb-5">Curated slots, by the hour</p>
+          <h1 className="display text-5xl leading-[0.95] md:text-7xl">
+            A space for your
+            <br />
+            <RotatingText words={ACTIVITIES} className="text-brand" />
+          </h1>
+          <p className="mt-6 max-w-md text-sm text-ink/50">
+            Browse open slots across our spaces and lock yours in seconds. No back-and-forth, no calls.
+          </p>
+        </div>
+        <div className="hidden border-l-2 border-ink pl-8 md:block">
+          <p className="display text-6xl text-brand">{available.length}</p>
+          <p className="eyebrow mt-1">Open slots</p>
+          <p className="display mt-6 text-6xl">{totalSpots}</p>
+          <p className="eyebrow mt-1">Spots left</p>
+        </div>
+      </div>
+
+      {/* TICKER */}
+      <Marquee items={["Book by the hour", "Verified spaces", "Instant confirmation", "Bengaluru", "No calls, no back-and-forth"]} />
+
+      {/* SLOT CAROUSEL */}
+      <div className="mt-14">
+        <div className="mb-5 flex items-center justify-between">
+          <p className="eyebrow">Available now</p>
+          {available.length > 2 && (
+            <div className="hidden gap-1.5 md:flex">
+              <button onClick={() => scroll(-1)} className="border-2 border-ink bg-white p-2 transition-colors hover:bg-ink hover:text-white"><ChevronLeft size={14} /></button>
+              <button onClick={() => scroll(1)} className="border-2 border-ink bg-white p-2 transition-colors hover:bg-ink hover:text-white"><ChevronRight size={14} /></button>
+            </div>
+          )}
+        </div>
+
+        {isLoading ? (
+          <p className="text-sm text-ink/40">Loading…</p>
+        ) : available.length === 0 ? (
+          <EmptyState icon={CalendarX} title="No slots available" subtitle="Check back soon." />
+        ) : (
+          <div ref={railRef} className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {available.map((slot) => (
+              <div key={slot.id} className="w-[85%] shrink-0 snap-start sm:w-[340px]">
+                <SlotCard slot={slot}
+                  action={
+                    <button onClick={() => setSelected(slot)} className="btn-primary w-full">
+                      Book slot <ArrowRight size={13} />
+                    </button>
+                  } />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {selected && <BookingDialog slot={selected} onClose={() => setSelected(null)} />}
+    </div>
+  );
+} 
+===== FILE: C:\Users\acer-nitro\Desktop\Calendly\schpot-scheduler\src\pages\user\MyBookings.jsx ===== 
+import { useState } from "react";
+import { BookMarked, Search } from "lucide-react";
+import { toast } from "sonner";
+import { useMyBookings, useCancelBooking } from "../../hooks/useBookings";
+import { fmtDate, fmtRange, getSavedEmail, saveEmail, isPast } from "../../lib/utils";
+import StatusBadge from "../../components/StatusBadge";
+import EmptyState from "../../components/EmptyState";
+
+export default function MyBookings() {
+  const [email, setEmail] = useState(getSavedEmail());
+  const [input, setInput] = useState(email);
+  const { data: bookings = [], isLoading } = useMyBookings(email);
+  const cancel = useCancelBooking();
+
+  const upcoming = bookings.filter((b) => b.status === "confirmed" && !isPast(b.slots.start_time));
+  const past = bookings.filter((b) => b.status !== "confirmed" || isPast(b.slots.start_time));
+
+  const Row = ({ b }) => (
+    <div className="card flex flex-wrap items-center justify-between gap-3 p-4">
+      <div>
+        <p className="text-sm font-bold">{b.slots?.title}</p>
+        <p className="mt-0.5 text-sm text-ink/50">
+          {fmtDate(b.slots.start_time)} · {fmtRange(b.slots.start_time, b.slots.end_time)}
+          {b.slots.location ? ` · ${b.slots.location}` : ""}
+        </p>
+      </div>
+      <div className="flex items-center gap-3">
+        <StatusBadge status={b.status} />
+        {b.status === "confirmed" && !isPast(b.slots.start_time) && (
+          <button onClick={() => cancel.mutate(b.id, { onSuccess: () => toast.success("Booking cancelled") })}
+            className="btn-ghost">Cancel</button>
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <div>
+      <p className="eyebrow-boxed mb-5">Your reservations</p>
+      <h1 className="display text-4xl md:text-5xl">My Bookings</h1>
+
+      <form onSubmit={(e) => { e.preventDefault(); setEmail(input.toLowerCase()); saveEmail(input); }}
+        className="mt-8 flex max-w-md gap-2">
+        <div className="relative flex-1">
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink/30" />
+          <input type="email" value={input} onChange={(e) => setInput(e.target.value)}
+            placeholder="Enter your email" className="input-field pl-9" />
+        </div>
+        <button className="btn-primary">Find</button>
+      </form>
+
+      {isLoading && <p className="mt-8 text-sm text-ink/40">Loading…</p>}
+
+      {email && !isLoading && bookings.length === 0 && (
+        <div className="mt-8">
+          <EmptyState icon={BookMarked} title="No bookings found" subtitle="Book a slot to see it here." />
+        </div>
+      )}
+
+      {upcoming.length > 0 && (
+        <>
+          <p className="eyebrow mt-10 mb-3">Upcoming</p>
+          <div className="space-y-2">{upcoming.map((b) => <Row key={b.id} b={b} />)}</div>
+        </>
+      )}
+      {past.length > 0 && (
+        <>
+          <p className="eyebrow mt-10 mb-3">Past & cancelled</p>
+          <div className="space-y-2 opacity-70">{past.map((b) => <Row key={b.id} b={b} />)}</div>
+        </>
+      )}
+    </div>
+  );
+}
