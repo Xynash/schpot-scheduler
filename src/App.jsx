@@ -3,9 +3,9 @@ import Layout from "./components/Layout";
 import AvailableSlots from "./pages/user/AvailableSlots";
 import MyBookings from "./pages/user/MyBookings";
 import CalendarPage from "./pages/CalendarPage";
-import Dashboard from "./pages/owner/Dashboard";
-import CreateSlot from "./pages/owner/CreateSlot";
-import Bookings from "./pages/owner/Bookings";
+import Dashboard from "./pages/Owner/Dashboard";
+import CreateSlot from "./pages/Owner/CreateSlot";
+import Bookings from "./pages/Owner/Bookings";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
